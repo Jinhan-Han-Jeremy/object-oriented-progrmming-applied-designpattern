@@ -1,2 +1,3 @@
-package org.example.unit;public class ProjectManager {
+package org.example.unit;
+public class ProjectManager implements TeamMemeber{
 }

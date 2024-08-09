@@ -1,2 +1,3 @@
-package org.example.member;public class DevOpsEngineer {
+package org.example.member;
+public class DevOpsEngineer implements TeamMember{
 }

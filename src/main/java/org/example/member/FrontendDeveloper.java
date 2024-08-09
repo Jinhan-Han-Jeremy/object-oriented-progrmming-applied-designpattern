@@ -1,2 +1,3 @@
-package org.example.member;public class FrontendDeveloper {
+package org.example.member;
+public class FrontendDeveloper implements TeamMember{
 }

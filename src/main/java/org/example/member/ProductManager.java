@@ -1,2 +1,3 @@
-package org.example.member;public class ProductManager {
+package org.example.member;
+public class ProductManager implements TeamMemeber{
 }
