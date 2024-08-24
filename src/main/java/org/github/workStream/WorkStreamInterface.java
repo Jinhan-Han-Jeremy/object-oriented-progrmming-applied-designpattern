@@ -1,2 +1,4 @@
-package org.github.workStream;public interface WorkStreamInterface {
+package org.github.workStream;
+
+public interface WorkStreamInterface {
 }

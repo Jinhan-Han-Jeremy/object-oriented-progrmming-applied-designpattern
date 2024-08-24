@@ -1,2 +1,2 @@
-package org.example.performance;public class DefaultPerformanceStrategy {
+package org.github.performance;public class DefaultPerformanceStrategy {
 }

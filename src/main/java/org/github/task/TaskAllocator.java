@@ -1,4 +1,4 @@
-package org.example.Task;
+package org.github.Task;
 
 public class TaskManager {
 }

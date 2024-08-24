@@ -1,2 +1,2 @@
-package org.example.member;public interface PerformanceStrategy {
+package org.github.member;public interface PerformanceStrategy {
 }

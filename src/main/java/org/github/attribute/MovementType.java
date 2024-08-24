@@ -1,4 +1,4 @@
-package org.example.attribute;
+package org.github.attribute;
 
 public enum MovementType {
     AIR, GROUND, BOTH

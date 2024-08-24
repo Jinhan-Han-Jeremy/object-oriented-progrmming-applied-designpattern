@@ -1,2 +1,4 @@
-package org.github.performance;public class DataMeasurement {
+package org.github.performance;
+
+public class DataMeasurement {
 }

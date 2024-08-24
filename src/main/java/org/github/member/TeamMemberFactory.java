@@ -1,14 +1,22 @@
 package org.github.member;
-
+import java.util.ArrayList;
 import java.util.List;
 
 public class TeamMemberFactory {
 
-    // BackendDeveloper 객체를 생성하는 팩토리 메서드
-    public static TeamMember createBackendDeveloper(String name, List<String> skills, int level) {
-        String role = "Backend Developer"; // 역할을 "Backend Developer"로 설정
-        return new TeamMember(name, role, skills, level);
+    public static TeamMemberInterface createTeamMember(String name, String role, int level, List<String> skills) {
+        if (level < 1 || level > 3) {
+            throw new IllegalArgumentException("Level must be between 1 and 3.");
+        }
+        return new TeamMember(name, role, level, skills);
     }
 
-    // 다른 팀원 종류도 생성하는 메서드를 추가할 수 있음
+    public static List<TeamMemberInterface> createTeam(String role, int numberOfMembers) {
+        List<TeamMemberInterface> team = new ArrayList<>();
+        for (int i = 0; i < numberOfMembers; i++) {
+            int level = (i % 3) + 1;  // 1~3 레벨로 순환
+            team.add(createTeamMember(role + " " + (i + 1), role, level, List.of("Skill A", "Skill B")));
+        }
+        return team;
+    }
 }

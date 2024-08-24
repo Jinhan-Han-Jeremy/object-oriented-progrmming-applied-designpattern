@@ -1,2 +1,4 @@
-package org.github.workStream;public class WorkStream {
+package org.github.workStream;
+
+public class WorkStream {
 }

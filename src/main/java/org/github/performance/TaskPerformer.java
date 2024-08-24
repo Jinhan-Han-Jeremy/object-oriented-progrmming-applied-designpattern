@@ -1,2 +1,2 @@
-package org.example.performance;public interface TaskPerformer {
+package org.github.performance;public interface TaskPerformer {
 }

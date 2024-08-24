@@ -1,3 +1,3 @@
-package org.github.member;
+package org.github.manager;
 public class TeamMemberManager {
 }
