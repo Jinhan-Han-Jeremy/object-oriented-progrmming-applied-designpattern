@@ -1,70 +1,101 @@
 package org.github.member;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TeamMember implements TeamMemberInterface {
     private String name;
     private String role;
     private int level;
     private List<String> skills;
+    private boolean state;
+    private Map<String, Integer> evaluations;  // 평가를 저장하기 위한 맵
 
-    public TeamMember(String name, String role, int level, List<String> skills) {
+    public TeamMember(String name, String role, int level, List<String> skills, boolean state, Map<String, Integer> evaluations) {
         this.name = name;
         this.role = role;
         this.level = level;
         this.skills = new ArrayList<>(skills);  // List의 변경으로 인한 사이드 이펙트를 방지하기 위해 방어적 복사
+        this.state = state;
+        this.evaluations = new HashMap<>(evaluations);  // Map의 변경으로 인한 사이드 이펙트를 방지하기 위해 방어적 복사
     }
 
-    @Override
-    public float performanceRate(String work) {
-        // 성과율 계산 로직을 더 구체화
-        // 예: 각 업무에 따라 다른 성과율을 계산할 수 있도록 개선 가능
-        float baseRate = 1.2f;
-        switch (work.toLowerCase()) {
-            case "development":
-                return baseRate * level * 1.5f;
-            case "design":
-                return baseRate * level * 1.3f;
-            default:
-                return baseRate * level;
-        }
-    }
-
-    @Override
+    // 이름 반환
     public String getName() {
         return name;
     }
 
-    @Override
+    // 역할 반환
     public String getRole() {
         return role;
     }
 
-    @Override
+    // 레벨 반환
     public int getLevel() {
         return level;
     }
 
-    @Override
+    // 스킬 리스트 반환
     public List<String> getSkills() {
-        return new ArrayList<>(skills); // 외부에서 List를 변경하지 못하도록 방어적 복사
+        return new ArrayList<>(skills);  // 방어적 복사로 반환
     }
 
-    @Override
-    public void addSkill(String skill) {
-        if (!skills.contains(skill)) {
-            skills.add(skill);
+    // 특정 평가 점수 반환
+    public Integer getEvaluation(String evaluationType) {
+        return evaluations.getOrDefault(evaluationType, null);
+    }
+
+    // 특정 평가 점수 설정
+    public void setEvaluation(String evaluationType, int score) {
+        evaluations.put(evaluationType, score);
+    }
+
+    public boolean getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        boolean result = true;
+        if(state.equals("progress")){
+            result = false;
         }
     }
 
-    @Override
-    public void setRole(String role) {
-        this.role = role;
+    // 모든 평가를 반환
+    public Map<String, Integer> getEvaluations() {
+        return new HashMap<>(evaluations);  // 방어적 복사로 반환
     }
 
     @Override
-    public void setLevel(int level) {
-        this.level = level;
+    public String toString() {
+        return "TeamMember{" +
+                "name='" + name + '\'' +
+                ", role='" + role + '\'' +
+                ", level=" + level +
+                ", skills=" + skills +
+                ", state=" + state +
+                ", evaluations=" + evaluations +
+                '}';
+    }
+
+    @Override
+    public float getPerformanceRate(List<Integer> performamceScores) {
+        return 0.0F;
+    }
+
+    // 메인 메서드 - 클래스 사용 예시
+    public static void main(String[] args) {
+        List<String> skills = List.of("Leadership", "Project Management");
+
+        Map<String, Integer> evaluations = new HashMap<>();
+        evaluations.put("프로젝트 목표와 범위 설정 초기", 3);
+        evaluations.put("프로젝트 목표와 범위 설정 후기", 4);
+        evaluations.put("일정과 예산 계획 수립 초기", 4);
+        evaluations.put("팀 구성 및 역할 할당 초기", 4);
+
+        TeamMember member = new TeamMember("이프로", "Project Manager", 2, skills, true, evaluations);
+
+        System.out.println(member);
     }
 }

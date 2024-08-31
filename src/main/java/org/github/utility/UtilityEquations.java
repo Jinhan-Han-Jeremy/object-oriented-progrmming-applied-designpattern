@@ -2,14 +2,10 @@ package org.github.utility;
 
 import org.github.member.TeamMember;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 import org.github.task.Task;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class UtilityEquations implements UtilityEquationsInterface {
     private float standardDeviation;
@@ -114,7 +110,8 @@ public class UtilityEquations implements UtilityEquationsInterface {
             float taskContribution = totalDays / tasks.size(); // 각 업무에 걸린 평균 시간
             for (TeamMember member : members) {
                 String key = member.getName() + "-" + task.getName();
-                float currentRate = member.performanceRate(task.getName());
+                List<Integer> p = new ArrayList<>(Arrays.asList(10, 2, 3, 4));
+                float currentRate = member.getPerformanceRate(p);
                 performanceMap.put(key, taskContribution / currentRate);
             }
         }
