@@ -37,7 +37,7 @@ public class TeamMemberParser implements CSVParser<TeamMember> {
             //need to fix
             boolean state = Boolean.parseBoolean(row[3]);
 
-            TeamMember member = new TeamMember(name, role, level, skills, state, evaluations);
+            TeamMember member = new TeamMember(name, role, level, state, skills, evaluations);
             teamMembers.add(member);
         }
 

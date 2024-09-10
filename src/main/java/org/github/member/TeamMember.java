@@ -12,12 +12,12 @@ public class TeamMember implements TeamMemberInterface {
     private boolean state;
     private Map<String, Integer> evaluations;  // 평가를 저장하기 위한 맵
 
-    public TeamMember(String name, String role, int level, List<String> skills, boolean state, Map<String, Integer> evaluations) {
+    public TeamMember(String name, String role, int level,  boolean state, List<String> skills, Map<String, Integer> evaluations) {
         this.name = name;
         this.role = role;
         this.level = level;
-        this.skills = new ArrayList<>(skills);  // List의 변경으로 인한 사이드 이펙트를 방지하기 위해 방어적 복사
         this.state = state;
+        this.skills = new ArrayList<>(evaluations.keySet()); // List의 변경으로 인한 사이드 이펙트를 방지하기 위해 방어적 복사
         this.evaluations = new HashMap<>(evaluations);  // Map의 변경으로 인한 사이드 이펙트를 방지하기 위해 방어적 복사
     }
 
@@ -36,6 +36,11 @@ public class TeamMember implements TeamMemberInterface {
         return level;
     }
 
+    // bool state 반환
+    public boolean getState() {
+        return state;
+    }
+
     // 스킬 리스트 반환
     public List<String> getSkills() {
         return new ArrayList<>(skills);  // 방어적 복사로 반환
@@ -51,9 +56,6 @@ public class TeamMember implements TeamMemberInterface {
         evaluations.put(evaluationType, score);
     }
 
-    public boolean getState() {
-        return state;
-    }
 
     public void setState(String state) {
         boolean result = true;
@@ -73,8 +75,8 @@ public class TeamMember implements TeamMemberInterface {
                 "name='" + name + '\'' +
                 ", role='" + role + '\'' +
                 ", level=" + level +
-                ", skills=" + skills +
                 ", state=" + state +
+                ", skills=" + skills +
                 ", evaluations=" + evaluations +
                 '}';
     }
@@ -94,7 +96,7 @@ public class TeamMember implements TeamMemberInterface {
         evaluations.put("일정과 예산 계획 수립 초기", 4);
         evaluations.put("팀 구성 및 역할 할당 초기", 4);
 
-        TeamMember member = new TeamMember("이프로", "Project Manager", 2, skills, true, evaluations);
+        TeamMember member = new TeamMember("이프로", "Project Manager", 2, true, skills,  evaluations);
 
         System.out.println(member);
     }

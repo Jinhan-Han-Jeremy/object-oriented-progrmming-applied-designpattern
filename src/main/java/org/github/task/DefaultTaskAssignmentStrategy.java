@@ -1,2 +1,3 @@
-package org.github.task;public class DefaultTaskAssignmentStrategy {
+package org.github.task;
+public class DefaultTaskAssignmentStrategy {
 }

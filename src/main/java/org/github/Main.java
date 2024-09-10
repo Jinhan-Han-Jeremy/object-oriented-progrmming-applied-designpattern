@@ -14,7 +14,7 @@ public class Main {
 
         // Try to load team members from the CSV file
         try {
-            manager.loadTeamMembers("C:\\Users\\USER\\IdeaProjects\\object-oriented-progrmming-applied-designpattern\\files\\Team_Tasks_Assignment.csv");
+            manager.loadTeamMembers("C:\\Users\\USER\\IdeaProjects\\object-oriented-progrmming-applied-designpattern\\files\\team_member.csv");
 
             // Print all loaded team members
             System.out.println("startt ");

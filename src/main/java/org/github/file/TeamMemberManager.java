@@ -36,7 +36,7 @@ public enum TeamMemberManager {
     // Example main method for testing purposes
     public static void main(String[] args) {
         TeamMemberManager manager = TeamMemberManager.INSTANCE;
-        manager.loadTeamMembers("C:\\Users\\USER\\IdeaProjects\\object-oriented-progrmming-applied-designpattern\\files\\Team_Tasks_Assignment.csv");
+        manager.loadTeamMembers("C:\\Users\\USER\\IdeaProjects\\object-oriented-progrmming-applied-designpattern\\files\\team_member.csv");
 
         for (TeamMember member : manager.getTeamMembers()) {
             System.out.println(member);

@@ -5,11 +5,11 @@ import java.util.Map;
 
 public class TeamMemberFactory {
 
-    public static TeamMemberInterface createTeamMember(String name, String role, int level, List<String> skills, boolean state, Map<String, Integer> evaluations) {
+    public static TeamMemberInterface createTeamMember(String name, String role, int level, boolean state, List<String> skills,  Map<String, Integer> evaluations) {
         if (level < 1 || level > 3) {
             throw new IllegalArgumentException("Level must be between 1 and 3.");
         }
-        return new TeamMember(name, role, level, skills, state, evaluations);
+        return new TeamMember(name, role, level, state, skills,  evaluations);
     }
 
     public static List<TeamMemberInterface> createTeam(String role, int numberOfMembers) {

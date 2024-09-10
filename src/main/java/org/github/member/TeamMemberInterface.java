@@ -12,6 +12,8 @@ public interface TeamMemberInterface {
     // 팀원의 레벨을 반환하는 메서드
     int getLevel();
 
+    boolean getState();
+
     // 팀원의 스킬 리스트를 반환하는 메서드
     List<String> getSkills();
 

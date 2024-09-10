@@ -1,4 +1,4 @@
-package org.github.Task;
+package org.github.task;
 
 public class TaskAllocator{
 }
