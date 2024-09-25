@@ -7,6 +7,16 @@ import org.github.member.TeamMember;
 
 public class Main {
     public static void main(String[] args) {
+
+
+
+
+
+
+
+
+
+
         System.out.println("Starting Team Member Manager...");
 
         // Create an instance of TeamMemberManager using the singleton pattern

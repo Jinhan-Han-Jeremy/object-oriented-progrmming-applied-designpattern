@@ -1,2 +1,3 @@
-package org.github.task;public interface TaskAssignmentStrategy {
+package org.github.task;
+public interface TaskAssignmentStrategy {
 }

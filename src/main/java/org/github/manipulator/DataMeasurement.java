@@ -1,4 +1,4 @@
-package org.github.performance;
+package org.github.manipulator;
 
 public class DataMeasurement {
 }
