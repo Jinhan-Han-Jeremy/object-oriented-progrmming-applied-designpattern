@@ -115,7 +115,7 @@ public class OptimalTeam implements OptimalTeamInterface {
     }
 
     // 9. 최적의 조합을 업데이트하는 함수
-    private static void updateCombinationIfBetter(BigDecimal parallelTime, BigDecimal bestTime, List<TeamMember> bestCombination, List<TeamMember> newCombination) {
+    private void updateCombinationIfBetter(BigDecimal parallelTime, BigDecimal bestTime, List<TeamMember> bestCombination, List<TeamMember> newCombination) {
         if (parallelTime.compareTo(bestTime) < 0) {
             bestTime = parallelTime;
             bestCombination.clear();
