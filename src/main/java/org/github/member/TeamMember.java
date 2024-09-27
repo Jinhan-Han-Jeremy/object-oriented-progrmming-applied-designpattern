@@ -69,35 +69,10 @@ public class TeamMember implements TeamMemberInterface {
         return new HashMap<>(evaluations);  // 방어적 복사로 반환
     }
 
-    @Override
-    public String toString() {
-        return "TeamMember{" +
-                "name='" + name + '\'' +
-                ", role='" + role + '\'' +
-                ", level=" + level +
-                ", state=" + state +
-                ", skills=" + skills +
-                ", evaluations=" + evaluations +
-                '}';
-    }
 
     @Override
     public float getPerformanceRate(List<Integer> performamceScores) {
         return 0.0F;
     }
 
-    // 메인 메서드 - 클래스 사용 예시
-    public static void main(String[] args) {
-        List<String> skills = List.of("Leadership", "Project Management");
-
-        Map<String, Integer> evaluations = new HashMap<>();
-        evaluations.put("프로젝트 목표와 범위 설정 초기", 3);
-        evaluations.put("프로젝트 목표와 범위 설정 후기", 4);
-        evaluations.put("일정과 예산 계획 수립 초기", 4);
-        evaluations.put("팀 구성 및 역할 할당 초기", 4);
-
-        TeamMember member = new TeamMember("이프로", "Project Manager", 2, true, skills,  evaluations);
-
-        System.out.println(member);
-    }
 }

@@ -15,18 +15,20 @@ import org.github.tasksstream.TasksHistory;
 import java.util.*;
 
 public class Main {
+
+    public static void hashMapSplitter(Map<String, Integer> hashMapStrInt){
+
+        for (String key : hashMapStrInt.keySet()) {
+            Integer value = hashMapStrInt.get(key);
+            System.out.println("작업 : " + key + ", 값 : " + value);
+        }
+    }
+
     public static void main(String[] args) {
 
         List<TeamMember> members = new ArrayList<>();  // 팀 멤버 리스트
         List<Task> tasks = new ArrayList<>();  // 작업 리스트
 
-        public static void hashMapSplitter(Map<String, Integer> hashMapStrInt){
-
-            for (String key : hashMapStrInt.keySet()) {
-                Integer value = hashMapStrInt.get(key);
-                System.out.println("작업 : " + key + ", 값 : " + value);
-            }
-        }
 
         // 이프로 - Project Manager
         Map<String, Integer> evaluations1 = new HashMap<>();
@@ -89,31 +91,31 @@ public class Main {
 
         // 데이터를 Task 객체로 생성하여 리스트에 추가
         tasks.add(new Task("프로젝트 목표와 범위 설정 후기", Arrays.asList("ProjectManager"), 4, Arrays.asList("")));
-        tasks.add(new Task("일정과 예산 계획 수립 초기", Arrays.asList("ProjectManager", "ProductManager"), 3, Arrays.asList("프로젝트 목표와 범위 설정")));
-        tasks.add(new Task("일정과 예산 계획 수립 후기", Arrays.asList("ProjectManager", "ProductManager"), 3, Arrays.asList("프로젝트 목표와 범위 설정")));
-        tasks.add(new Task("팀 구성 및 역할 할당 초기", Arrays.asList("ProductManager"), 3, Arrays.asList("프로젝트 목표와 범위 설정")));
-        tasks.add(new Task("팀 구성 및 역할 할당 후기", Arrays.asList("ProductManager"), 4, Arrays.asList("프로젝트 목표와 범위 설정")));
-        tasks.add(new Task("프로젝트 킥오프 미팅 주최 초기", Arrays.asList("ProjectManager", "BusinessOperator"), 4, Arrays.asList("프로젝트 목표와 범위 설정", "팀 구성 및 역할 할당")));
-        tasks.add(new Task("프로젝트 킥오프 미팅 주최 후기", Arrays.asList("ProjectManager", "BusinessOperator"), 5, Arrays.asList("프로젝트 목표와 범위 설정", "팀 구성 및 역할 할당")));
-        tasks.add(new Task("서비스 수익 분석 초기", Arrays.asList("ProductManager"), 4, Arrays.asList("프로젝트 목표와 범위 설정", "일정과 예산 계획 수립", "팀 구성 및 역할 할당")));
-        tasks.add(new Task("서비스 수익 분석 후기", Arrays.asList("ProductManager"), 5, Arrays.asList("프로젝트 목표와 범위 설정", "일정과 예산 계획 수립", "팀 구성 및 역할 할당")));
-        tasks.add(new Task("시장 조사 및 경쟁 분석 초기", Arrays.asList("ProductManager"), 4, Arrays.asList("프로젝트 목표와 범위 설정", "일정과 예산 계획 수립", "팀 구성 및 역할 할당")));
-        tasks.add(new Task("시장 조사 및 경쟁 분석 후기", Arrays.asList("BusinessOperator"), 5, Arrays.asList("프로젝트 목표와 범위 설정", "일정과 예산 계획 수립", "팀 구성 및 역할 할당")));
+        tasks.add(new Task("일정과 예산 계획 수립 초기", Arrays.asList("ProjectManager", "ProductManager"), 3, Arrays.asList("프로젝트 목표와 범위 설정 초기")));
+        tasks.add(new Task("일정과 예산 계획 수립 후기", Arrays.asList("ProjectManager", "ProductManager"), 3, Arrays.asList("프로젝트 목표와 범위 설정 초기")));
+        tasks.add(new Task("팀 구성 및 역할 할당 초기", Arrays.asList("ProductManager"), 3, Arrays.asList("프로젝트 목표와 범위 설정 초기")));
+        tasks.add(new Task("팀 구성 및 역할 할당 후기", Arrays.asList("ProductManager"), 4, Arrays.asList("프로젝트 목표와 범위 설정 초기")));
+        tasks.add(new Task("프로젝트 킥오프 미팅 주최 초기", Arrays.asList("ProjectManager", "BusinessOperator"), 4, Arrays.asList("프로젝트 목표와 범위 설정 초기", "팀 구성 및 역할 할당 초기")));
+        tasks.add(new Task("프로젝트 킥오프 미팅 주최 후기", Arrays.asList("ProjectManager", "BusinessOperator"), 5, Arrays.asList("프로젝트 목표와 범위 설정 초기", "팀 구성 및 역할 할당 초기")));
+        tasks.add(new Task("서비스 수익 분석 초기", Arrays.asList("ProductManager"), 4, Arrays.asList("팀 구성 및 역할 할당 초기")));
+        tasks.add(new Task("서비스 수익 분석 후기", Arrays.asList("ProductManager"), 5, Arrays.asList("팀 구성 및 역할 할당 초기")));
+        tasks.add(new Task("시장 조사 및 경쟁 분석 초기", Arrays.asList("ProductManager"), 4, Arrays.asList("일정과 예산 계획 수립 초기", "팀 구성 및 역할 할당 초기")));
+        tasks.add(new Task("시장 조사 및 경쟁 분석 후기", Arrays.asList("BusinessOperator"), 5, Arrays.asList("일정과 예산 계획 수립 초기", "팀 구성 및 역할 할당 초기")));
         tasks.add(new Task("사용자 요구사항 수집 및 분석 후기", Arrays.asList("ProductManager", "BusinessOperator"), 4, Arrays.asList("시장 조사 및 경쟁 분석 초기")));
-        tasks.add(new Task("제품 비전과 전략 수립 초기", Arrays.asList("BusinessOperator", "ProductManager"), 4));
-        tasks.add(new Task("제품 비전과 전략 수립 후기", Arrays.asList("BusinessOperator", "ProductManager"), 3));
-        tasks.add(new Task("MVP 정의 초기", Arrays.asList("Developer"), 4));
-        tasks.add(new Task("MVP 정의 후기", Arrays.asList("Developer"), 3));
-        tasks.add(new Task("비즈니스 요구사항 분석 초기", Arrays.asList("ProductManager", "BusinessOperator"), 4));
-        tasks.add(new Task("비즈니스 요구사항 분석 후기", Arrays.asList("ProductManager", "BusinessOperator"), 3));
-        tasks.add(new Task("이해관계자 인터뷰 및 요구사항 문서화 초기", Arrays.asList("ProjectManager", "BusinessOperator"), 5));
-        tasks.add(new Task("이해관계자 인터뷰 및 요구사항 문서화 후기", Arrays.asList("ProjectManager", "BusinessOperator"), 4));
-        tasks.add(new Task("비즈니스 프로세스 정의 초기", Arrays.asList("BusinessOperator"), 4));
-        tasks.add(new Task("비즈니스 프로세스 정의 후기", Arrays.asList("BusinessOperator"), 3));
-        tasks.add(new Task("기술 스택 선정 초기", Arrays.asList("TechLead"), 2));
-        tasks.add(new Task("기술 스택 선정 후기", Arrays.asList("TechLead"), 4));
-        tasks.add(new Task("시스템 아키텍처 설계 초기", Arrays.asList("Developer", "TechLead"), 2));
-        tasks.add(new Task("시스템 아키텍처 설계 후기", Arrays.asList("Developer", "TechLead"), 2));
+        tasks.add(new Task("제품 비전과 전략 수립 초기", Arrays.asList("BusinessOperator", "ProductManager"), 4, Arrays.asList("서비스 수익 분석", "시장 조사 및 경쟁 분석")));
+        tasks.add(new Task("제품 비전과 전략 수립 후기", Arrays.asList("BusinessOperator", "ProductManager"), 3, Arrays.asList("서비스 수익 분석", "시장 조사 및 경쟁 분석")));
+        tasks.add(new Task("MVP 정의 초기", Arrays.asList("Developer"), 4, Arrays.asList("제품 비전과 전략 수립")));
+        tasks.add(new Task("MVP 정의 후기", Arrays.asList("Developer"), 3, Arrays.asList("제품 비전과 전략 수립")));
+        tasks.add(new Task("비즈니스 요구사항 분석 초기", Arrays.asList("ProductManager", "BusinessOperator"), 4, Arrays.asList("제품 비전과 전략 수립")));
+        tasks.add(new Task("비즈니스 요구사항 분석 후기", Arrays.asList("ProductManager", "BusinessOperator"), 3, Arrays.asList("제품 비전과 전략 수립")));
+        tasks.add(new Task("이해관계자 인터뷰 및 요구사항 문서화 초기", Arrays.asList("ProjectManager", "BusinessOperator"), 5, Arrays.asList("비즈니스 요구사항 분석  초기")));
+        tasks.add(new Task("이해관계자 인터뷰 및 요구사항 문서화 후기", Arrays.asList("ProjectManager", "BusinessOperator"), 4, Arrays.asList("비즈니스 요구사항 분석  초기")));
+        tasks.add(new Task("비즈니스 프로세스 정의 초기", Arrays.asList("BusinessOperator"), 4, Arrays.asList("비즈니스 요구사항 분석  초기")));
+        tasks.add(new Task("비즈니스 프로세스 정의 후기", Arrays.asList("BusinessOperator"), 3, Arrays.asList("비즈니스 요구사항 분석  초기")));
+        tasks.add(new Task("기술 스택 선정 초기", Arrays.asList("TechLead"), 2, Arrays.asList("비즈니스 요구사항 분석 초기")));
+        tasks.add(new Task("기술 스택 선정 후기", Arrays.asList("TechLead"), 4, Arrays.asList("비즈니스 요구사항 분석  초기")));
+        tasks.add(new Task("시스템 아키텍처 설계 초기", Arrays.asList("Developer", "TechLead"), 2, Arrays.asList("비즈니스 프로세스 정의 초기")));
+        tasks.add(new Task("시스템 아키텍처 설계 후기", Arrays.asList("Developer", "TechLead"), 2, Arrays.asList("비즈니스 프로세스 정의 초기")));
 
 
         // List<TasksHistory> 생성 및 데이터 할당

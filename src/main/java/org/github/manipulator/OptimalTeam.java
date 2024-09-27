@@ -123,6 +123,16 @@ public class OptimalTeam implements OptimalTeamInterface {
         }
     }
 
+    private List<String> ConvertedNamestFromTeam(List<TeamMember> team) {
+        // 가변 리스트로 초기화
+        List<String> names = new ArrayList<>();
+
+        for (int i = 0; i < team.size(); i++) {
+            names.add(team.get(i).getName());
+        }
+
+        return names;
+    }
 
     @Override
     public void findOptimalTeamCombination2(List<TeamMember> teamMembers, double[][] timeMatrix, List<String> tasks, int firstTaskIdx) {
@@ -137,7 +147,9 @@ public class OptimalTeam implements OptimalTeamInterface {
         List<TeamMember> thirdTaskTeam = findOptimalTeamForTask2(remainingMembersAfterSecond, timeMatrix, (firstTaskIdx + 2) % tasks.size());
         BigDecimal thirdTaskTime = calculateTaskTime2(remainingMembersAfterSecond, thirdTaskTeam, timeMatrix, (firstTaskIdx + 2) % tasks.size());
 
-        System.out.println("First task " + tasks.get(firstTaskIdx) + ": " + firstTaskTeam + ", Completion time: " + firstTaskTime + " days");
+
+
+        System.out.println("First task " + tasks.get(firstTaskIdx) + ": " + String.join(", ", ConvertedNamestFromTeam(firstTaskTeam))+ ", Completion time: " + firstTaskTime + " days");
         System.out.println("Second task " + tasks.get((firstTaskIdx + 1) % tasks.size()) + ": " + secondTaskTeam + ", Completion time: " + secondTaskTime + " days");
         System.out.println("Third task " + tasks.get((firstTaskIdx + 2) % tasks.size()) + ": " + thirdTaskTeam + ", Completion time: " + thirdTaskTime + " days");
     }

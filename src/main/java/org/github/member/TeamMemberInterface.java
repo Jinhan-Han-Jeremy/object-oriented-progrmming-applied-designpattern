@@ -28,6 +28,4 @@ public interface TeamMemberInterface {
 
     float getPerformanceRate(List<Integer> performamceScores);
 
-    // 객체 정보를 문자열로 반환하는 메서드 (toString 메서드는 Object 클래스에서 상속받아 이미 모든 클래스가 가지고 있지만, 인터페이스에 명시적으로 선언할 수 있음)
-    String toString();
 }
