@@ -75,4 +75,15 @@ public class TeamMember implements TeamMemberInterface {
         return 0.0F;
     }
 
+    @Override
+    public String toString() {
+        return "TeamMember{" +
+                "name='" + name + '\'' +
+                ", role='" + role + '\'' +
+                ", level=" + level +
+                ", skills=" + skills +
+                ", state=" + state +
+                ", evaluations=" + evaluations +
+                '}';
+    }
 }

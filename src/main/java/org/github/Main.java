@@ -5,7 +5,6 @@ import org.github.file.CSVFormatException;
 import org.github.file.TeamMemberManager;
 import org.github.manipulator.OptimalTeam;
 import org.github.member.MemberAssign;
-import org.github.member.MemberAssignInterface;
 import org.github.member.MemberTaskMatrix;
 import org.github.member.TeamMember;
 import org.github.task.Task;
@@ -16,7 +15,7 @@ import java.util.*;
 
 public class Main {
 
-    public static void hashMapSplitter(Map<String, Integer> hashMapStrInt){
+    public static void hashMapSplitter(Map<String, Integer> hashMapStrInt) {
 
         for (String key : hashMapStrInt.keySet()) {
             Integer value = hashMapStrInt.get(key);
@@ -85,7 +84,6 @@ public class Main {
         members.add(new TeamMember("유태리", "Tech Lead", 3, true, new ArrayList<>(evaluations6.keySet()), evaluations6));
 
         List<String> employees = List.of("ProjectManager", "BusinessOperator", "Product Manager");
-
 
 
         // 데이터를 Task 객체로 생성하여 리스트에 추가
@@ -204,11 +202,8 @@ public class Main {
         // 작업 추가 (작업 이름 예시)
         List<String> selectedTasknames = Arrays.asList("프로젝트 목표와 범위 설정", "일정과 예산 계획 수립", "팀 구성 및 역할 할당");
 
-        List<Task> selectedTasks = new ArrayList<>();
         TaskAssign taskAssign = new TaskAssign(tasks, selectedTasknames, tasksHistoryList);
-        selectedTasks = taskAssign.taskAssigner(tasks, selectedTasknames, tasksHistoryList);
-        ///여기까지 작업할당 완료
-        ///여기까지 작업할당 완료
+        List<Task> selectedTasks = taskAssign.executeAssignTask();
 
 
         System.out.println("\nsorted done ? ");
@@ -219,31 +214,23 @@ public class Main {
 
         System.out.println("Task Completion Times: " + 1);
 
-        MemberAssign memberAssign= new MemberAssign();
+        MemberAssign memberAssign = new MemberAssign();
 
         // 팀 멤버와 작업 정의
         List<TeamMember> selectedMembers = memberAssign.selectMember(selectedTasks, members, false);
 
+        // 객체지향에서 메세지가 중요하다. 행동이 중요하다.
+        // TaskAssign 1---------------*> Task 메세지를 준다고 가정 "나 생성해줘! '필요한 파라미터가 뭐야!' "
+
 
         // 팀 멤버 출력
-        for (int i =0; i < selectedMembers.size(); i++) {
+        for (int i = 0; i < selectedMembers.size(); i++) {
             TeamMember member = selectedMembers.get(i);
             System.out.println(member.getName());
 
             Map<String, Integer> evaluations = member.getEvaluations();
             hashMapSplitter(evaluations);
         }
-
-        List<String> selectedTaskNames = new ArrayList<>();
-
-// selectedTasks에서 task 이름을 리스트에 추가
-        for (int i = 0; i < selectedTasks.size(); i++) {
-            selectedTaskNames.add(selectedTasks.get(i).getName());
-            System.out.println(selectedTasks.get(i).getName());
-        }
-
-// 리스트를 String 배열로 변환
-        String[] taskNamesArray = selectedTaskNames.toArray(new String[0]);
 
         MemberTaskMatrix memberTaskMatrix = new MemberTaskMatrix();
         double[][] timeMatrixx = memberTaskMatrix.generateTimeMatrix(selectedTasks, selectedMembers);
@@ -256,19 +243,19 @@ public class Main {
             System.out.println();  // 행이 끝날 때 줄바꿈
         }
 
-        OptimalTeam optimalTeam = new OptimalTeam();
-        for (int i = 0; i< selectedTasks.size(); i++){
-            System.out.println("\nCase " + (i+1) + ": "+ selectedTasks.get(i).getName() + " - 작업 최적화 먼저");
-            optimalTeam.findOptimalTeamCombination(selectedMembers, timeMatrixx, selectedTaskNames, i);
-        }
+        List<String> list = selectedTasks.stream()
+                .peek(System.out::println)
+                .map(Task::getName)
+                .toList();
 
+        OptimalTeam optimalTeam = new OptimalTeam(selectedTasks);
+        optimalTeam.printOptimalTeamCombination(selectedMembers, timeMatrixx, list);
 
-
-
-
-
-
-
+//        OptimalTeam optimalTeam = new OptimalTeam();
+//        for (int i = 0; i< selectedTasks.size(); i++){
+//            System.out.println("\nCase " + (i+1) + ": "+ selectedTasks.get(i).getName() + " - 작업 최적화 먼저");
+//            optimalTeam.findOptimalTeamCombination(selectedMembers, timeMatrixx, list, i);
+//        }
 
 
         System.out.println("Starting Team Member Manager...");
@@ -278,10 +265,10 @@ public class Main {
 
         // Try to load team members from the CSV file
         try {
-            manager.loadTeamMembers("C:\\Users\\USER\\IdeaProjects\\object-oriented-progrmming-applied-designpattern\\files\\team_member.csv");
+            manager.loadTeamMembers("/Users/len/object-oriented-progrmming-applied-designpattern/files/team_member.csv");
 
             // Print all loaded team members
-            System.out.println("startt ");
+            System.out.println("start ");
             for (TeamMember member : manager.getTeamMembers()) {
                 System.out.println(member);
             }

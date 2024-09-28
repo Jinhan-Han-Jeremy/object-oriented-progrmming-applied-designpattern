@@ -1,6 +1,7 @@
 package org.github.manipulator;
 
 import org.github.member.TeamMember;
+import org.github.task.Task;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -8,9 +9,15 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class OptimalTeam implements OptimalTeamInterface {
+
+    private final List<Task> selectedTasks;
+
+    public OptimalTeam(List<Task> selectedTasks) {
+
+        this.selectedTasks = selectedTasks;
+    }
 
     @Override
     public List<TeamMember> findOptimalTeamForTask(List<TeamMember> teamMembers, double[][] timeMatrix, int taskIdx) {
@@ -155,6 +162,26 @@ public class OptimalTeam implements OptimalTeamInterface {
 
     }
 
+    public void printOptimalTeamCombination(List<TeamMember> teamMembers, double[][] timeMatrix, List<String> tasks) {
+        List<TeamMember> remainingMember = new ArrayList<>(teamMembers);
+
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.println("\nCase " + (i + 1) + ": " + selectedTasks.get(i).getName() + " - 작업 최적화 먼저");
+            for (int j = 0; j < 3; j++) {
+                int taskIdx = (i + j) % tasks.size();
+                List<TeamMember> taskTeam = findOptimalTeamForTask(remainingMember, timeMatrix, taskIdx);
+                BigDecimal taskTime = calculateTaskTime2(remainingMember, taskTeam, timeMatrix, taskIdx);
+
+                System.out.println((j == 0 ? "First" : j == 1 ? "Second" : "Third")
+                        + " task " + tasks.get(taskIdx) + ": "
+                        + String.join(", ", ConvertedNamestFromTeam(taskTeam))
+                        + ", Completion time: " + taskTime + " days");
+
+                remainingMember = excludeTeamMembers(remainingMember, taskTeam);
+            }
+        }
+    }
+
     @Override
     public BigDecimal calculateInverseSum(List<Double> times) {
         BigDecimal sum = BigDecimal.ZERO;
@@ -201,4 +228,6 @@ public class OptimalTeam implements OptimalTeamInterface {
         }
         return remainings;
     }
+
+
 }

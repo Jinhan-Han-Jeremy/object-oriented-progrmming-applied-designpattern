@@ -4,7 +4,7 @@ import org.github.tasksstream.TasksHistory;
 
 import java.util.*;
 
-public class TaskAssign implements TaskAssignInterface{
+public class TaskAssign implements TaskAssignInterface {
 
     // 멤버 변수 선언
     private List<Task> tasks;
@@ -86,7 +86,34 @@ public class TaskAssign implements TaskAssignInterface{
     }
 
     @Override
-    public List<Task> taskAssigner() {
+    public List<Task> taskAssigner(List<Task> tasks, List<String> selectedTaskNames, List<TasksHistory> tasksHistoryList) {
+        List<Task> selectedTasks = new ArrayList<>();
+        Set<String> words = new HashSet<>();
+
+        for (int i = 0; i < tasks.size(); i++) {
+            Task task = tasks.get(i);
+
+            for (String selectedTaskName : selectedTaskNames) {
+                String theWord = removeWords(task.getName());
+                words.add(theWord);
+                System.out.println(i + " tsk " + selectedTaskName + "  select task " + theWord);
+
+                // 현재 작업 리스트에 올라와 있지 않은 작업인가? 그리고 한번 노출 된 적 있던 작업인가?
+                if (checkTaskState(task, tasksHistoryList) && words.contains(theWord)) {
+                    // 유사성 판단 결과 출력
+                    if (isSimilar(selectedTaskName, theWord) || containsOrContained(selectedTaskName, theWord)) {
+                        System.out.println("두 문자열이 75% 이상 유사하고 해당 단어를 포함하고 있습니다: " + theWord);
+                        selectedTasks.add(task);
+                    }
+                }
+            }
+        }
+
+        selectedTasks.sort(Comparator.comparingInt(Task::getDifficulty).reversed());
+        return selectedTasks;
+    }
+
+    public List<Task> executeAssignTask() {
         List<Task> selectedTasks = new ArrayList<>();
         Set<String> words = new HashSet<>();
 
