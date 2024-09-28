@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 public class OptimalTeam implements OptimalTeamInterface {
 
     @Override
-    public List<TeamMember> findOptimalTeamForTask2(List<TeamMember> teamMembers, double[][] timeMatrix, int taskIdx) {
+    public List<TeamMember> findOptimalTeamForTask(List<TeamMember> teamMembers, double[][] timeMatrix, int taskIdx) {
         BigDecimal bestTime = new BigDecimal(Double.MAX_VALUE);
         List<TeamMember> bestCombination = new ArrayList<>();
 
@@ -135,23 +135,24 @@ public class OptimalTeam implements OptimalTeamInterface {
     }
 
     @Override
-    public void findOptimalTeamCombination2(List<TeamMember> teamMembers, double[][] timeMatrix, List<String> tasks, int firstTaskIdx) {
-        List<TeamMember> firstTaskTeam = findOptimalTeamForTask2(teamMembers, timeMatrix, firstTaskIdx);
-        BigDecimal firstTaskTime = calculateTaskTime2(teamMembers, firstTaskTeam, timeMatrix, firstTaskIdx);
-        List<TeamMember> remainingMembers = excludeTeamMembers2(teamMembers, firstTaskTeam);
+    public void findOptimalTeamCombination(List<TeamMember> teamMembers, double[][] timeMatrix, List<String> tasks, int firstTaskIdx) {
 
-        List<TeamMember> secondTaskTeam = findOptimalTeamForTask2(remainingMembers, timeMatrix, (firstTaskIdx + 1) % tasks.size());
-        BigDecimal secondTaskTime = calculateTaskTime2(remainingMembers, secondTaskTeam, timeMatrix, (firstTaskIdx + 1) % tasks.size());
-        List<TeamMember> remainingMembersAfterSecond = excludeTeamMembers2(remainingMembers, secondTaskTeam);
+        List<TeamMember> remainingMember = new ArrayList<>(teamMembers);
 
-        List<TeamMember> thirdTaskTeam = findOptimalTeamForTask2(remainingMembersAfterSecond, timeMatrix, (firstTaskIdx + 2) % tasks.size());
-        BigDecimal thirdTaskTime = calculateTaskTime2(remainingMembersAfterSecond, thirdTaskTeam, timeMatrix, (firstTaskIdx + 2) % tasks.size());
+        for (int i = 0; i < 3; i++) {
+            int taskIdx = (firstTaskIdx + i) % tasks.size();
+            List<TeamMember> taskTeam = findOptimalTeamForTask(remainingMember, timeMatrix, taskIdx);
+            BigDecimal taskTime = calculateTaskTime2(remainingMember, taskTeam, timeMatrix, taskIdx);
+
+            System.out.println((i == 0 ? "First" : i == 1 ? "Second" : "Third")
+                    + " task " + tasks.get(taskIdx) + ": "
+                    + String.join(", ", ConvertedNamestFromTeam(taskTeam))
+                    + ", Completion time: " + taskTime + " days");
+
+            remainingMember = excludeTeamMembers(remainingMember, taskTeam);
+        }
 
 
-
-        System.out.println("First task " + tasks.get(firstTaskIdx) + ": " + String.join(", ", ConvertedNamestFromTeam(firstTaskTeam))+ ", Completion time: " + firstTaskTime + " days");
-        System.out.println("Second task " + tasks.get((firstTaskIdx + 1) % tasks.size()) + ": " + secondTaskTeam + ", Completion time: " + secondTaskTime + " days");
-        System.out.println("Third task " + tasks.get((firstTaskIdx + 2) % tasks.size()) + ": " + thirdTaskTeam + ", Completion time: " + thirdTaskTime + " days");
     }
 
     @Override
@@ -191,7 +192,7 @@ public class OptimalTeam implements OptimalTeamInterface {
     }
 
     @Override
-    public List<TeamMember> excludeTeamMembers2(List<TeamMember> allMembers, List<TeamMember> selectedMembers) {
+    public List<TeamMember> excludeTeamMembers(List<TeamMember> allMembers, List<TeamMember> selectedMembers) {
         List<TeamMember> remainings = new ArrayList<>();
         for (TeamMember member : allMembers) {
             if (!selectedMembers.contains(member)) {

@@ -6,6 +6,17 @@ import java.util.*;
 
 public class TaskAssign implements TaskAssignInterface{
 
+    // 멤버 변수 선언
+    private List<Task> tasks;
+    private List<String> selectedTaskNames;
+    private List<TasksHistory> tasksHistoryList;
+
+    // 생성자
+    public TaskAssign(List<Task> tasks, List<String> selectedTaskNames, List<TasksHistory> tasksHistoryList) {
+        this.tasks = tasks;
+        this.selectedTaskNames = selectedTaskNames;
+        this.tasksHistoryList = tasksHistoryList;
+    }
 
     @Override
     public int levenshteinDistance(String s1, String s2) {
@@ -75,7 +86,7 @@ public class TaskAssign implements TaskAssignInterface{
     }
 
     @Override
-    public List<Task> taskAssigner(List<Task> tasks, List<String> selectedTaskNames, List<TasksHistory> tasksHistoryList) {
+    public List<Task> taskAssigner() {
         List<Task> selectedTasks = new ArrayList<>();
         Set<String> words = new HashSet<>();
 

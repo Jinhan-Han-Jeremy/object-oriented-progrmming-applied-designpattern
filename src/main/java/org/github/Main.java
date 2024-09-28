@@ -88,7 +88,6 @@ public class Main {
 
 
 
-
         // 데이터를 Task 객체로 생성하여 리스트에 추가
         tasks.add(new Task("프로젝트 목표와 범위 설정 후기", Arrays.asList("ProjectManager"), 4, Arrays.asList("")));
         tasks.add(new Task("일정과 예산 계획 수립 초기", Arrays.asList("ProjectManager", "ProductManager"), 3, Arrays.asList("프로젝트 목표와 범위 설정 초기")));
@@ -206,7 +205,7 @@ public class Main {
         List<String> selectedTasknames = Arrays.asList("프로젝트 목표와 범위 설정", "일정과 예산 계획 수립", "팀 구성 및 역할 할당");
 
         List<Task> selectedTasks = new ArrayList<>();
-        TaskAssign taskAssign = new TaskAssign();
+        TaskAssign taskAssign = new TaskAssign(tasks, selectedTasknames, tasksHistoryList);
         selectedTasks = taskAssign.taskAssigner(tasks, selectedTasknames, tasksHistoryList);
         ///여기까지 작업할당 완료
         ///여기까지 작업할당 완료
@@ -260,7 +259,7 @@ public class Main {
         OptimalTeam optimalTeam = new OptimalTeam();
         for (int i = 0; i< selectedTasks.size(); i++){
             System.out.println("\nCase " + (i+1) + ": "+ selectedTasks.get(i).getName() + " - 작업 최적화 먼저");
-            optimalTeam.findOptimalTeamCombination2(selectedMembers, timeMatrixx, selectedTaskNames, i);
+            optimalTeam.findOptimalTeamCombination(selectedMembers, timeMatrixx, selectedTaskNames, i);
         }
 
 
