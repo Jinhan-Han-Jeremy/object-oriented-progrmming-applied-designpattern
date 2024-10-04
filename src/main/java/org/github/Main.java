@@ -206,7 +206,7 @@ public class Main {
 
         List<Task> selectedTasks = new ArrayList<>();
         TaskAssign taskAssign = new TaskAssign(tasks, selectedTasknames, tasksHistoryList);
-        selectedTasks = taskAssign.taskAssigner(tasks, selectedTasknames, tasksHistoryList);
+        selectedTasks = taskAssign.taskAssigner();
         ///여기까지 작업할당 완료
         ///여기까지 작업할당 완료
 
@@ -219,10 +219,10 @@ public class Main {
 
         System.out.println("Task Completion Times: " + 1);
 
-        MemberAssign memberAssign= new MemberAssign();
+        MemberAssign memberAssign= new MemberAssign(selectedTasks, members,  false);
 
         // 팀 멤버와 작업 정의
-        List<TeamMember> selectedMembers = memberAssign.selectMember(selectedTasks, members, false);
+        List<TeamMember> selectedMembers = memberAssign.selectedMembersForTasks(selectedTasks, members);
 
 
         // 팀 멤버 출력
@@ -270,7 +270,6 @@ public class Main {
 
 
 
-
         System.out.println("Starting Team Member Manager...");
 
         // Create an instance of TeamMemberManager using the singleton pattern
@@ -283,7 +282,7 @@ public class Main {
             // Print all loaded team members
             System.out.println("startt ");
             for (TeamMember member : manager.getTeamMembers()) {
-                System.out.println(member);
+                System.out.println(member.getName());
             }
         } catch (CSVFileReadException | CSVFormatException e) {
             // Handle exceptions by printing error messages to the console
