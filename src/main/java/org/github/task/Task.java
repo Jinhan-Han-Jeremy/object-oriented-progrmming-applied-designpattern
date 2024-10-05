@@ -11,9 +11,19 @@ public class Task implements TaskInterface{
 
     // 생성자
     public Task(String name, List<String> employees, int difficulty, List<String> requirements) {
+
         this.name = name;
         this.employees = employees;
-        this.difficulty = difficulty;
+
+        if (difficulty < 1) {
+            this.difficulty = difficulty * -1;
+        } else if (difficulty > 5) {
+            this.difficulty = 3;
+        }
+        else{
+            this.difficulty = difficulty;
+        }
+
         this.requirements = requirements;
     }
 

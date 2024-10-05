@@ -2,6 +2,9 @@ package org.github.utility;
 
 import org.github.member.TeamMember;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.*;
 
 
@@ -30,49 +33,33 @@ public class UtilityEquations implements UtilityEquationsInterface {
     }
 
 
-    private double[] gaussianElimination(double[][] a, double[] b) {
-        int n = b.length;
-
-        // 전진 소거 단계
-        for (int i = 0; i < n; i++) {
-            // 주 대각 성분이 0이 아닌지 확인하고, 그렇다면 행을 바꿉니다.
-            int max = i;
-
-            for (int j = i + 1; j < n; j++) {
-                if (Math.abs(a[j][i]) > Math.abs(a[max][i])) {
-                    max = j;
-                }
-            }
-
-            double[] temp = a[i];
-            a[i] = a[max];
-            a[max] = temp;
-
-            double t = b[i];
-            b[i] = b[max];
-            b[max] = t;
-
-            // 0으로 만들기
-            for (int j = i + 1; j < n; j++) {
-                double factor = a[j][i] / a[i][i];
-                b[j] -= factor * b[i];
-                for (int k = i; k < n; k++) {
-                    a[j][k] -= factor * a[i][k];
-                }
-            }
+    public static BigDecimal calculateParallelTimeFromInverseSum(List<Double> times) {
+        BigDecimal inverseSum = calculateInverseSum(times);
+        if (inverseSum.compareTo(BigDecimal.ZERO) > 0) {
+            return BigDecimal.ONE.divide(inverseSum, 10, RoundingMode.HALF_UP);
+        } else {
+            return BigDecimal.ZERO;
         }
-
-        // 후진 대입 단계
-        double[] x = new double[n];
-        for (int i = n - 1; i >= 0; i--) {
-            double sum = 0.0;
-            for (int j = i + 1; j < n; j++) {
-                sum += a[i][j] * x[j];
-            }
-            x[i] = (b[i] - sum) / a[i][i];
-        }
-        return x;
     }
+    // 8. 병렬 작업 시간을 계산하는 함수
+
+    public static BigDecimal calculateParallelTime(List<Double> times, int memberCount) {
+        BigDecimal inverseSum = calculateInverseSum(times);
+        return BigDecimal.valueOf(memberCount).divide(inverseSum, MathContext.DECIMAL128);
+    }
+
+    public static BigDecimal calculateInverseSum(List<Double> times) {
+        BigDecimal sum = BigDecimal.ZERO;
+        for (double time : times) {
+            if (time > 0 && Double.isFinite(time)) {
+                BigDecimal timeBD = BigDecimal.valueOf(time);
+                sum = sum.add(BigDecimal.ONE.divide(timeBD, 5, RoundingMode.HALF_UP));
+            }
+        }
+        return sum;
+    }
+
+
 
 
     @Override
@@ -92,44 +79,13 @@ public class UtilityEquations implements UtilityEquationsInterface {
         return standardDeviation;
     }
 
+
     @Override
     public List<TeamMember> gridAlgorithm(List<TeamMember> members) {
         // 특정 그리드 알고리즘에 따라 멤버 리스트를 처리하는 로직
         return members;
     }
 
-    @Override
-    // 멤버 리스트와 업무 리스트를 사용하여 연립방정식을 해결하는 함수
-    public AA multipleEquations(List<TeamMember> members, List<Task> tasks, float totalDays) {
-        Map<String, Float> performanceMap = new HashMap<>();
 
-        // 예를 들어, 첫 번째 케이스(존, 밥, 제이와 업무 b, d)가 총 3일 걸린다고 가정하고 연립방정식을 세웁니다.
-        // 각 멤버의 성과율을 구해야 합니다.
-
-        for (Task task : tasks) {
-            float taskContribution = totalDays / tasks.size(); // 각 업무에 걸린 평균 시간
-            for (TeamMember member : members) {
-                String key = member.getName() + "-" + task.getName();
-                List<Integer> p = new ArrayList<>(Arrays.asList(10, 2, 3, 4));
-                float currentRate = member.getPerformanceRate(p);
-                performanceMap.put(key, taskContribution / currentRate);
-            }
-        }
-
-        return new AA(performanceMap); // 각 멤버와 업무에 따른 퍼포먼스율 반환
-    }
-
-    public static class AA{
-
-        Map<String, Float> value;
-
-        public AA(Map<String, Float> value) {
-            this.value = value;
-        }
-
-        public Map<String, Float> getValue() {
-            return value;
-        }
-    }
 }
 

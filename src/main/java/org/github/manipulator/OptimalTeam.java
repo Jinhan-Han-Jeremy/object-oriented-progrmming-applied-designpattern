@@ -3,14 +3,15 @@ package org.github.manipulator;
 import org.github.member.TeamMember;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
+import  org.github.utility.UtilityEquations;
 
 public class OptimalTeam implements OptimalTeamInterface {
+
+    public OptimalTeam() {
+    }
 
     @Override
     public List<TeamMember> findOptimalTeamForTask(List<TeamMember> teamMembers, double[][] timeMatrix, int taskIdx) {
@@ -44,6 +45,20 @@ public class OptimalTeam implements OptimalTeamInterface {
         updateBestCombination(count, i, j, k, time1, time2, time3, teamMembers, bestTime, bestCombination);
     }
 
+    @Override
+    public BigDecimal calculateTaskTimeByMembers(List<TeamMember> teamMembers, List<TeamMember> selectedTeam, double[][] timeMatrix, int taskIdx) {
+        List<Double> times = new ArrayList<>();
+        for (TeamMember member : selectedTeam) {
+            for (int i = 0; i < teamMembers.size(); i++) {
+                if (teamMembers.get(i).getName().equals(member.getName())) {
+                    times.add(timeMatrix[i][taskIdx]);
+                    break;
+                }
+            }
+        }
+        return UtilityEquations.calculateParallelTimeFromInverseSum(times);
+    }
+
     // 3. 비유한 값의 개수를 계산하는 함수
     private long getNonFiniteCount(double... times) {
         long count = 0;
@@ -69,7 +84,7 @@ public class OptimalTeam implements OptimalTeamInterface {
     // 5. 모든 값이 유한한 경우 처리하는 함수
     private void processAllFiniteCase(int i, int j, int k, double time1, double time2, double time3, List<TeamMember> teamMembers, BigDecimal bestTime, List<TeamMember> bestCombination) {
         List<Double> times = Arrays.asList(time1, time2, time3);
-        BigDecimal parallelTime = calculateParallelTime(times, 3);
+        BigDecimal parallelTime = UtilityEquations.calculateParallelTime(times, 3);
 
         if (parallelTime.compareTo(bestTime) < 0) {
             bestTime = parallelTime;
@@ -82,13 +97,13 @@ public class OptimalTeam implements OptimalTeamInterface {
     private void processOneInfiniteCase(int i, int j, int k, double time1, double time2, double time3, List<TeamMember> teamMembers, BigDecimal bestTime, List<TeamMember> bestCombination) {
         BigDecimal parallelTime;
         if (!Double.isFinite(time1)) {
-            parallelTime = calculateParallelTime(Arrays.asList(time2, time3), 2);
+            parallelTime = UtilityEquations.calculateParallelTime(Arrays.asList(time2, time3), 2);
             updateCombinationIfBetter(parallelTime, bestTime, bestCombination, Arrays.asList(teamMembers.get(j), teamMembers.get(k)));
         } else if (!Double.isFinite(time2)) {
-            parallelTime = calculateParallelTime(Arrays.asList(time1, time3), 2);
+            parallelTime = UtilityEquations.calculateParallelTime(Arrays.asList(time1, time3), 2);
             updateCombinationIfBetter(parallelTime, bestTime, bestCombination, Arrays.asList(teamMembers.get(i), teamMembers.get(k)));
         } else {
-            parallelTime = calculateParallelTime(Arrays.asList(time1, time2), 2);
+            parallelTime = UtilityEquations.calculateParallelTime(Arrays.asList(time1, time2), 2);
             updateCombinationIfBetter(parallelTime, bestTime, bestCombination, Arrays.asList(teamMembers.get(i), teamMembers.get(j)));
         }
     }
@@ -108,11 +123,6 @@ public class OptimalTeam implements OptimalTeamInterface {
         }
     }
 
-    // 8. 병렬 작업 시간을 계산하는 함수
-    private BigDecimal calculateParallelTime(List<Double> times, int memberCount) {
-        BigDecimal inverseSum = calculateInverseSum(times);
-        return BigDecimal.valueOf(memberCount).divide(inverseSum, MathContext.DECIMAL128);
-    }
 
     // 9. 최적의 조합을 업데이트하는 함수
     private void updateCombinationIfBetter(BigDecimal parallelTime, BigDecimal bestTime, List<TeamMember> bestCombination, List<TeamMember> newCombination) {
@@ -137,58 +147,21 @@ public class OptimalTeam implements OptimalTeamInterface {
     @Override
     public void findOptimalTeamCombination(List<TeamMember> teamMembers, double[][] timeMatrix, List<String> tasks, int firstTaskIdx) {
 
-        List<TeamMember> remainingMember = new ArrayList<>(teamMembers);
+        List<TeamMember> allMembers = new ArrayList<>(teamMembers);
 
         for (int i = 0; i < 3; i++) {
             int taskIdx = (firstTaskIdx + i) % tasks.size();
-            List<TeamMember> taskTeam = findOptimalTeamForTask(remainingMember, timeMatrix, taskIdx);
-            BigDecimal taskTime = calculateTaskTime2(remainingMember, taskTeam, timeMatrix, taskIdx);
+            List<TeamMember> taskTeam = findOptimalTeamForTask(allMembers, timeMatrix, taskIdx);
+            BigDecimal taskTime = calculateTaskTimeByMembers(allMembers, taskTeam, timeMatrix, taskIdx);
 
             System.out.println((i == 0 ? "First" : i == 1 ? "Second" : "Third")
                     + " task " + tasks.get(taskIdx) + ": "
                     + String.join(", ", ConvertedNamestFromTeam(taskTeam))
                     + ", Completion time: " + taskTime + " days");
 
-            remainingMember = excludeTeamMembers(remainingMember, taskTeam);
+            allMembers = excludeTeamMembers(allMembers, taskTeam);
         }
 
-
-    }
-
-    @Override
-    public BigDecimal calculateInverseSum(List<Double> times) {
-        BigDecimal sum = BigDecimal.ZERO;
-        for (double time : times) {
-            if (time > 0 && Double.isFinite(time)) {
-                BigDecimal timeBD = BigDecimal.valueOf(time);
-                sum = sum.add(BigDecimal.ONE.divide(timeBD, 5, RoundingMode.HALF_UP));
-            }
-        }
-        return sum;
-    }
-
-    @Override
-    public BigDecimal calculateParallelTimeFromInverseSum(List<Double> times) {
-        BigDecimal inverseSum = calculateInverseSum(times);
-        if (inverseSum.compareTo(BigDecimal.ZERO) > 0) {
-            return BigDecimal.ONE.divide(inverseSum, 10, RoundingMode.HALF_UP);
-        } else {
-            return BigDecimal.ZERO;
-        }
-    }
-
-    @Override
-    public BigDecimal calculateTaskTime2(List<TeamMember> teamMembers, List<TeamMember> selectedTeam, double[][] timeMatrix, int taskIdx) {
-        List<Double> times = new ArrayList<>();
-        for (TeamMember member : selectedTeam) {
-            for (int i = 0; i < teamMembers.size(); i++) {
-                if (teamMembers.get(i).getName().equals(member.getName())) {
-                    times.add(timeMatrix[i][taskIdx]);
-                    break;
-                }
-            }
-        }
-        return calculateParallelTimeFromInverseSum(times);
     }
 
     @Override
