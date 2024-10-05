@@ -29,6 +29,7 @@ public class Main {
         List<TeamMember> members = new ArrayList<>();  // 팀 멤버 리스트
         List<Task> tasks = new ArrayList<>();  // 작업 리스트
 
+        System.out.println("initial start");
 
         // 이프로 - Project Manager
         Map<String, Integer> evaluations1 = new HashMap<>();
