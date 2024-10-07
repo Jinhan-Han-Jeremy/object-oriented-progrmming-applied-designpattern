@@ -49,13 +49,14 @@ public class OptimalTeam implements OptimalTeamInterface {
     public BigDecimal calculateTaskTimeByMembers(List<TeamMember> teamMembers, List<TeamMember> selectedTeam, double[][] timeMatrix, int taskIdx) {
         List<Double> times = new ArrayList<>();
         for (TeamMember member : selectedTeam) {
-            for (int i = 0; i < teamMembers.size(); i++) {
+            for (int i= 0; i < teamMembers.size(); i++) {
                 if (teamMembers.get(i).getName().equals(member.getName())) {
                     times.add(timeMatrix[i][taskIdx]);
                     break;
                 }
             }
         }
+        BigDecimal calculatedTimes = UtilityEquations.calculateParallelTimeFromInverseSum(times);
         return UtilityEquations.calculateParallelTimeFromInverseSum(times);
     }
 

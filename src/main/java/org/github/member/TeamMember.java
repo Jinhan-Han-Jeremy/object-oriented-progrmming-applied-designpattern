@@ -9,14 +9,14 @@ public class TeamMember implements TeamMemberInterface {
     private String role;
     private int level;
     private List<String> skills;
-    private boolean state;
+    private boolean isWorking;
     private Map<String, Integer> evaluations;  // 평가를 저장하기 위한 맵
 
-    public TeamMember(String name, String role, int level,  boolean state, List<String> skills, Map<String, Integer> evaluations) {
+    public TeamMember(String name, String role, int level,  boolean isWorking, List<String> skills, Map<String, Integer> evaluations) {
         this.name = name;
         this.role = role;
         this.level = level;
-        this.state = state;
+        this.isWorking = isWorking;
         this.skills = new ArrayList<>(evaluations.keySet()); // List의 변경으로 인한 사이드 이펙트를 방지하기 위해 방어적 복사
         this.evaluations = new HashMap<>(evaluations);  // Map의 변경으로 인한 사이드 이펙트를 방지하기 위해 방어적 복사
     }
@@ -36,9 +36,9 @@ public class TeamMember implements TeamMemberInterface {
         return level;
     }
 
-    // bool state 반환
-    public boolean getState() {
-        return state;
+    // bool isWorking 반환
+    public boolean getisWorking() {
+        return isWorking;
     }
 
     // 스킬 리스트 반환
@@ -57,9 +57,9 @@ public class TeamMember implements TeamMemberInterface {
     }
 
 
-    public void setState(String state) {
+    public void setisWorking(String isWorking) {
         boolean result = true;
-        if(state.equals("progress")){
+        if(isWorking.equals("progress")){
             result = false;
         }
     }
