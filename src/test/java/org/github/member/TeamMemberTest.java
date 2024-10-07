@@ -51,7 +51,7 @@ public class TeamMemberTest {
                 () -> assertEquals("John Doe", validMember.getName(), "이름이 잘못되었습니다."),
                 () -> assertEquals("Developer", validMember.getRole(), "역할이 잘못되었습니다."),
                 () -> assertEquals(3, validMember.getLevel(), "레벨이 잘못되었습니다."),
-                () -> assertTrue(validMember.getState(), "상태가 true여야 합니다."),
+                () -> assertTrue(validMember.getisWorking(), "상태가 true여야 합니다."),
                 () -> assertEquals(List.of("Java", "Python"), validMember.getSkills(), "스킬 목록이 잘못되었습니다."),
                 () -> assertEquals(90, validMember.getEvaluation("Java"), "Java 평가 점수가 잘못되었습니다."),
                 () -> assertEquals(85, validMember.getEvaluation("Python"), "Python 평가 점수가 잘못되었습니다.")
@@ -104,8 +104,8 @@ public class TeamMemberTest {
     public void testStateChange() {
         logger.info("testStateChange() 실행 중...");
         // 상태 변경 메서드 테스트
-        validMember.setState("progress");
-        assertFalse(validMember.getState(), "상태가 false로 변경되어야 합니다.");
+        validMember.setisWorking("progress");
+        assertFalse(validMember.getisWorking(), "상태가 false로 변경되어야 합니다.");
         logger.info("testStateChange() 성공: 상태 변경 확인.");
     }
 
