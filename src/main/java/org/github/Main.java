@@ -29,6 +29,7 @@ public class Main {
         List<TeamMember> members = new ArrayList<>();  // 팀 멤버 리스트
         List<Task> tasks = new ArrayList<>();  // 작업 리스트
 
+        System.out.println("initial start");
 
         // 이프로 - Project Manager
         Map<String, Integer> evaluations1 = new HashMap<>();
@@ -85,7 +86,6 @@ public class Main {
         members.add(new TeamMember("유태리", "Tech Lead", 3, true, new ArrayList<>(evaluations6.keySet()), evaluations6));
 
         List<String> employees = List.of("ProjectManager", "BusinessOperator", "Product Manager");
-
 
 
 
@@ -206,8 +206,8 @@ public class Main {
         List<String> selectedTasknames = Arrays.asList("프로젝트 목표와 범위 설정", "일정과 예산 계획 수립", "팀 구성 및 역할 할당");
 
         List<Task> selectedTasks = new ArrayList<>();
-        TaskAssign taskAssign = new TaskAssign();
-        selectedTasks = taskAssign.taskAssigner(tasks, selectedTasknames, tasksHistoryList);
+        TaskAssign taskAssign = new TaskAssign(tasks, selectedTasknames, tasksHistoryList);
+        selectedTasks = taskAssign.taskAssigner();
         ///여기까지 작업할당 완료
         ///여기까지 작업할당 완료
 
@@ -220,10 +220,10 @@ public class Main {
 
         System.out.println("Task Completion Times: " + 1);
 
-        MemberAssign memberAssign= new MemberAssign();
+        MemberAssign memberAssign= new MemberAssign(selectedTasks, members,  false);
 
         // 팀 멤버와 작업 정의
-        List<TeamMember> selectedMembers = memberAssign.selectMember(selectedTasks, members, false);
+        List<TeamMember> selectedMembers = memberAssign.selectedMembersForTasks(selectedTasks, members);
 
 
         // 팀 멤버 출력
@@ -260,9 +260,8 @@ public class Main {
         OptimalTeam optimalTeam = new OptimalTeam();
         for (int i = 0; i< selectedTasks.size(); i++){
             System.out.println("\nCase " + (i+1) + ": "+ selectedTasks.get(i).getName() + " - 작업 최적화 먼저");
-            optimalTeam.findOptimalTeamCombination2(selectedMembers, timeMatrixx, selectedTaskNames, i);
+            optimalTeam.findOptimalTeamCombination(selectedMembers, timeMatrixx, selectedTaskNames, i);
         }
-
 
 
 
@@ -284,7 +283,7 @@ public class Main {
             // Print all loaded team members
             System.out.println("startt ");
             for (TeamMember member : manager.getTeamMembers()) {
-                System.out.println(member);
+                System.out.println(member.getName());
             }
         } catch (CSVFileReadException | CSVFormatException e) {
             // Handle exceptions by printing error messages to the console
