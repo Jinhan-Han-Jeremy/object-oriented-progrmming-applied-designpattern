@@ -16,7 +16,7 @@ public class MemberAssign implements MemberAssignInterface{
         this.selectedTasks = selectedTasks;
 
         for (TeamMember member : members) {
-            if( member.getisWorking() == true){
+            if( member.getIsWorking() == true){
                 this.availableMembers = members;
             }
         }
