@@ -12,10 +12,9 @@ public interface TeamMemberInterface {
     // 팀원의 레벨을 반환하는 메서드
     int getLevel();
 
-    boolean getisWorking();
+    boolean getIsWorking();
 
-    // 팀원의 스킬 리스트를 반환하는 메서드
-    List<String> getSkills();
+    void setIsWorking(Boolean isWorking);
 
     // 특정 평가 점수를 반환하는 메서드
     Integer getEvaluation(String evaluationType);
@@ -25,6 +24,9 @@ public interface TeamMemberInterface {
 
     // 모든 평가를 반환하는 메서드
     Map<String, Integer> getEvaluations();
+
+    // 모든 평가를 할당하는 메서드
+    void setEvaluations(Map<String, Integer> newEvaluations);
 
     float getPerformanceRate(List<Integer> performamceScores);
 

@@ -54,13 +54,4 @@ public class Task implements TaskInterface{
                 '}';
     }
 
-    public static void main(String[] args) {
-        // Task 객체 예시
-        List<String> employees = List.of("ProjectManager", "BusinessOperator");
-        List<String> requirements = List.of("프로젝트 목표와 범위 설정", "팀 구성 및 역할 할당");
-
-        Task task = new Task("프로젝트 킥오프 미팅 주최 초기", employees, 4, requirements);
-
-        System.out.println(task);
-    }
 }

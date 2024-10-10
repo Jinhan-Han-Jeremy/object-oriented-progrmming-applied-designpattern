@@ -1,11 +1,7 @@
 package org.github;
 
-import org.github.file.CSVFileReadException;
-import org.github.file.CSVFormatException;
-import org.github.file.TeamMemberManager;
 import org.github.manipulator.OptimalTeam;
 import org.github.member.MemberAssign;
-import org.github.member.MemberAssignInterface;
 import org.github.member.MemberTaskMatrix;
 import org.github.member.TeamMember;
 import org.github.task.Task;
@@ -39,7 +35,7 @@ public class Main {
         evaluations1.put("일정과 예산 계획 수립 후기", 4);
         evaluations1.put("팀 구성 및 역할 할당 초기", 4);
         evaluations1.put("팀 구성 및 역할 할당 후기", 4);
-        members.add(new TeamMember("이프로", "Project Manager", 2, true, new ArrayList<>(evaluations1.keySet()), evaluations1));
+        members.add(new TeamMember("이프로", "Project Manager", 2, true, evaluations1));
 
         // 최프로 - Project Manager
         Map<String, Integer> evaluations2 = new HashMap<>();
@@ -47,7 +43,7 @@ public class Main {
         evaluations2.put("프로젝트 목표와 범위 설정 후기", 3);
         evaluations2.put("일정과 예산 계획 수립 초기", 3);
         evaluations2.put("일정과 예산 계획 수립 후기", 4);
-        members.add(new TeamMember("최프로", "Project Manager", 3, true, new ArrayList<>(evaluations2.keySet()), evaluations2));
+        members.add(new TeamMember("최프로", "Project Manager", 3, true, evaluations2));
 
         // 이덕마 - Product Manager
         Map<String, Integer> evaluations3 = new HashMap<>();
@@ -56,7 +52,7 @@ public class Main {
         evaluations3.put("서비스 수익 분석 초기", 3);
         evaluations3.put("프로젝트 킥오프 미팅 주최 후기", 5);
         evaluations3.put("서비스 수익 분석 후기", 3);
-        members.add(new TeamMember("이덕마", "Product Manager", 2, false, new ArrayList<>(evaluations3.keySet()), evaluations3));
+        members.add(new TeamMember("이덕마", "Product Manager", 2, false, evaluations3));
 
         // 최덕마 - Product Manager
         Map<String, Integer> evaluations4 = new HashMap<>();
@@ -66,7 +62,7 @@ public class Main {
         evaluations4.put("프로젝트 킥오프 미팅 주최 후기", 4);
         evaluations4.put("서비스 수익 분석 후기", 4);
         evaluations4.put("서비스 수익 분석 초기", 4);
-        members.add(new TeamMember("최덕마", "Product Manager", 3, true, new ArrayList<>(evaluations4.keySet()), evaluations4));
+        members.add(new TeamMember("최덕마", "Product Manager", 3, true, evaluations4));
 
         // 이비례 - Business Operator
         Map<String, Integer> evaluations5 = new HashMap<>();
@@ -75,7 +71,7 @@ public class Main {
         evaluations5.put("서비스 수익 분석 초기", 3);
         evaluations5.put("프로젝트 킥오프 미팅 주최 후기", 5);
         evaluations5.put("서비스 수익 분석 후기", 3);
-        members.add(new TeamMember("이비례", "Business Operator", 2, true, new ArrayList<>(evaluations5.keySet()), evaluations5));
+        members.add(new TeamMember("이비례", "Business Operator", 2, true, evaluations5));
 
         // 유태리 - Tech Lead
         Map<String, Integer> evaluations6 = new HashMap<>();
@@ -83,7 +79,7 @@ public class Main {
         evaluations6.put("시스템 아키텍처 설계 초기", 4);
         evaluations6.put("RESTful 서비스 초기", 4);
         evaluations6.put("마이크로서비스 초기", 4);
-        members.add(new TeamMember("유태리", "Tech Lead", 3, true, new ArrayList<>(evaluations6.keySet()), evaluations6));
+        members.add(new TeamMember("유태리", "Tech Lead", 3, true, evaluations6));
 
         List<String> employees = List.of("ProjectManager", "BusinessOperator", "Product Manager");
 
@@ -266,30 +262,8 @@ public class Main {
 
 
 
-
-
-
-
-
         System.out.println("Starting Team Member Manager...");
 
-        // Create an instance of TeamMemberManager using the singleton pattern
-        TeamMemberManager manager = TeamMemberManager.INSTANCE;
-
-        // Try to load team members from the CSV file
-        try {
-            manager.loadTeamMembers("C:\\Users\\USER\\IdeaProjects\\object-oriented-progrmming-applied-designpattern\\files\\team_member.csv");
-
-            // Print all loaded team members
-            System.out.println("startt ");
-            for (TeamMember member : manager.getTeamMembers()) {
-                System.out.println(member.getName());
-            }
-        } catch (CSVFileReadException | CSVFormatException e) {
-            // Handle exceptions by printing error messages to the console
-            System.err.println("An error occurred while loading team members: " + e.getMessage());
-            e.printStackTrace(); // Optionally, log stack trace for debugging purposes
-        }
 
         System.out.println("Team Member Manager has finished execution.");
     }
