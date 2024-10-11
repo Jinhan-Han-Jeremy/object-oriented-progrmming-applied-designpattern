@@ -8,8 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public class TeamMemberDataManager extends TableDbConnector implements DataManagerStrategy {
-    private List<TeamMember> teamMembers = new ArrayList<>();
+public class TeamMemberDataManager<T> extends TableDbConnector implements DataManagerStrategy {
+    private List<T> teamMembers = new ArrayList<>();
 
     @Override
     public void parseData() {
@@ -61,7 +61,7 @@ public class TeamMemberDataManager extends TableDbConnector implements DataManag
                 }
 
                 // TeamMember 객체에 추가
-                teamMembers.add(new TeamMember(name, role, level, state, skillsPerformanceMap));
+                teamMembers.add((T) new TeamMember(name, role, level, state, skillsPerformanceMap));
             }
 
             System.out.println("team_member 테이블에서 데이터가 성공적으로 파싱되었습니다.");
@@ -75,7 +75,7 @@ public class TeamMemberDataManager extends TableDbConnector implements DataManag
     }
 
     @Override
-    public List<TeamMember> getData() {
+    public List<T> getData() {
         return teamMembers;
     }
 

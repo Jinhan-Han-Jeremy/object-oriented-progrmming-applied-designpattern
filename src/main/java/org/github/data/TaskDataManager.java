@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TaskDataManager extends TableDbConnector implements DataManagerStrategy<Task> {
-    private List<Task> tasks = new ArrayList<>();
+public class TaskDataManager<T> extends TableDbConnector implements DataManagerStrategy<T> {
+    private List<T> tasks = new ArrayList<>();
 
     @Override
     public void parseData() {
@@ -57,7 +57,7 @@ public class TaskDataManager extends TableDbConnector implements DataManagerStra
                 }
 
                 // Task 객체 생성 및 추가
-                tasks.add(new Task(name, employees, difficulty, requirements));
+                tasks.add((T) new Task(name, employees, difficulty, requirements));
             }
             System.out.println("tasks 테이블에서 데이터가 성공적으로 파싱되었습니다.");
 
@@ -70,7 +70,7 @@ public class TaskDataManager extends TableDbConnector implements DataManagerStra
     }
 
     @Override
-    public List<Task> getData() {
+    public List<T> getData() {
         return tasks;
     }
 

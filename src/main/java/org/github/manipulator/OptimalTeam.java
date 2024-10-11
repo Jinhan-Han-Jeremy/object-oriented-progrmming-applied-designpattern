@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import  org.github.utility.UtilityEquations;
+import  org.github.utility.Utility;
 
 public class OptimalTeam implements OptimalTeamInterface {
 
@@ -134,21 +135,11 @@ public class OptimalTeam implements OptimalTeamInterface {
         }
     }
 
-    private List<String> ConvertedNamestFromTeam(List<TeamMember> team) {
-        // 가변 리스트로 초기화
-        List<String> names = new ArrayList<>();
-
-        for (int i = 0; i < team.size(); i++) {
-            names.add(team.get(i).getName());
-        }
-
-        return names;
-    }
-
     @Override
     public void findOptimalTeamCombination(List<TeamMember> teamMembers, double[][] timeMatrix, List<String> tasks, int firstTaskIdx) {
 
         List<TeamMember> allMembers = new ArrayList<>(teamMembers);
+        Utility utility = new Utility();
 
         for (int i = 0; i < 3; i++) {
             int taskIdx = (firstTaskIdx + i) % tasks.size();
@@ -157,7 +148,7 @@ public class OptimalTeam implements OptimalTeamInterface {
 
             System.out.println((i == 0 ? "First" : i == 1 ? "Second" : "Third")
                     + " task " + tasks.get(taskIdx) + ": "
-                    + String.join(", ", ConvertedNamestFromTeam(taskTeam))
+                    + String.join(", ", utility.getNamesOfTeamMembers(taskTeam))
                     + ", Completion time: " + taskTime + " days");
 
             allMembers = excludeTeamMembers(allMembers, taskTeam);

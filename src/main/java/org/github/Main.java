@@ -261,9 +261,7 @@ public class Main {
 
 
 
-
         System.out.println("Starting Team Member Manager...");
-
 
         System.out.println("Team Member Manager has finished execution.");
     }

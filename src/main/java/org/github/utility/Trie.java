@@ -3,6 +3,7 @@ import  org.github.utility.Node;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 public class Trie {
@@ -13,8 +14,8 @@ public class Trie {
         head = new Node(null);
     }
 
-    // 단어 삽입
-    public List<String> extractedwords(String insertedWord) {
+    // 단어 삽입 및 3가지 경우의 수로 단어를 잘라줌
+    public List<String> extractedWords(String insertedWord) {
 
         List<String> result = new ArrayList<>();
         if (insertedWord == null || insertedWord.isEmpty()) {
@@ -24,26 +25,20 @@ public class Trie {
         String[] words = insertedWord.split("\\s+"); // 공백을 기준으로 문자열 분할
 
         // 첫 번째 어절 추가
-        if (words.length > 0) {
+        if (words.length > 1) {
             result.add(words[0]);
         }
 
         // 첫 번째와 두 번째 어절을 조합한 문자열 추가
-        if (words.length > 1) {
+        if (words.length > 2) {
             result.add(words[0] + " " + words[1]);
-        }
-        // 두 번째 어절을 조합한 문자열 추가
-        if (words.length > 1) {
-            result.add(words[1]);
+            result.add(words[words.length-2]);
         }
 
-        wordAssign(result.get(0));
-        wordAssign(result.get(1));
-        wordAssign(result.get(2));
         return result;
     }
 
-    private void wordAssign(String insertedWord){
+    public void wordAssign(String insertedWord){
 
         Node currNode = head;
         for (char word : insertedWord.toCharArray()) {
@@ -53,8 +48,31 @@ public class Trie {
         currNode.fin = true;
     }
 
+    // 트라이에 저장된 모든 단어를 반환하는 메서드
+    public List<String> getAllWords() {
+        List<String> result = new ArrayList<>();
+        collectAllWords(head, new StringBuilder(), result);
+        return result;
+    }
+
+    // 모든 단어를 수집하는 도우미 함수 (DFS 방식)
+    private void collectAllWords(Node node, StringBuilder prefix, List<String> result) {
+        if (node.fin) {
+            result.add(prefix.toString());
+        }
+
+        for (Map.Entry<Character, Node> entry : node.next.entrySet()) {
+            char c = entry.getKey();
+            Node nextNode = entry.getValue();
+            prefix.append(c);
+            collectAllWords(nextNode, prefix, result);
+            prefix.deleteCharAt(prefix.length() - 1); // backtracking
+        }
+    }
+
+
     // 자동완성 기능
-    public void autoComplete(String string) {
+    public List<String> autoComplete(String string) {
         Node currNode = head;
         System.out.println("입력 정보: " + string);
         List<String> result = new ArrayList<>();
@@ -63,7 +81,7 @@ public class Trie {
         for (char word : string.toCharArray()) {
             if (!currNode.next.containsKey(word)) {
                 System.out.println("추천 검색어가 없습니다.");
-                return;
+                return result;
             } else {
                 currNode = currNode.next.get(word);
             }
@@ -88,23 +106,7 @@ public class Trie {
 
         // 결과 출력
         System.out.println(result);
-    }
-
-    // 검색기록 출력
-    public void showList() {
-        List<String> result = new ArrayList<>();
-        Stack<Node> stack = new Stack<>();
-        stack.addAll(head.next.values());
-
-        while (!stack.isEmpty()) {
-            Node v = stack.pop();
-            if (v.fin) {
-                result.add(collectWord(v, ""));
-            }
-            stack.addAll(v.next.values());
-        }
-
-        System.out.println(result);
+        return result;
     }
 
     // 단어 수집 (루트에서부터 단어를 만들어내는 도우미 함수)
@@ -127,7 +129,7 @@ public class Trie {
         String input_text = "회사는 새로운 소프트웨어 개발 프로젝트를 시작하며, 프로젝트 목표와 범위 설정으로 명확한 목표와 작업 범위를 정의한 뒤, 일정과 예산 계획 수립을 통해 필요한 자원과 시간을 산정합니다. 이어 팀 구성 및 역할 할당으로 인력을 배치하고, 프로젝트 킥오프 미팅에서 모든 계획을 공유하여 프로젝트를 본격적으로 시작합니다.";
 
         List<String> wordLists ;
-        wordLists = T.extractedwords(input_text);
+        wordLists = T.extractedWords(input_text);
 
         // 단어 삽입
         T.wordAssign("string");
@@ -140,6 +142,12 @@ public class Trie {
         T.wordAssign("southkorea");
         T.wordAssign("south korea");
 
+        // 모든 단어들
+        System.out.println(" 모든 단어들 ");
+        List<String> insertedWordLists ;
+        insertedWordLists = T.getAllWords();
+        System.out.println(insertedWordLists);
+
         // 자동완성 기능
         System.out.println(" 자동완성 기능 ");
         T.autoComplete("soo");
@@ -147,8 +155,5 @@ public class Trie {
         T.autoComplete("star");
         T.autoComplete("south");
 
-        // 검색기록 출력
-        System.out.println("검색기록 출력");
-        T.showList();
     }
 }

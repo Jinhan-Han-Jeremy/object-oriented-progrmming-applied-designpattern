@@ -5,11 +5,12 @@ import org.github.task.Task;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataManagerContext {
-    private DataManagerStrategy strategy;
+// 제네릭을 사용하는 DataManagerContext 클래스
+public class DataManagerContext<T> {
+    private DataManagerStrategy<T> strategy;
 
     // 전략 설정 메서드
-    public void setStrategy(DataManagerStrategy strategy) {
+    public void setStrategy(DataManagerStrategy<T> strategy) {
         this.strategy = strategy;
     }
 
@@ -23,7 +24,7 @@ public class DataManagerContext {
     }
 
     // 데이터를 가져오는 메서드
-    public List<Task> getData() {
+    public List<T> getData() {
         if (strategy != null) {
             return strategy.getData();
         } else {
