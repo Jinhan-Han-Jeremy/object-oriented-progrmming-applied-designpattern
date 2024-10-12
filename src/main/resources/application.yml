@@ -1,0 +1,34 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+  application:
+    name: oop_units
+  output:
+    ansi:
+      enabled: always
+  #  r2dbc:
+  #    url: r2dbc:pool:h2:mem://localhost/sample
+  r2dbc:
+    url: r2dbc:pool:mysqlDb://localhost:3306/sample
+    username: user
+    password: 1234
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:script/schema.sql
+server:
+  shutdown: graceful
+  compression:
+    enabled: true
+  error:
+    include-message: always
+    include-stacktrace: always
+    include-exception: true
+logging:
+  level:
+    #    root: debug
+    #    org.springframework.r2dbc.core: debug
+    #    org.springframework.r2dbc.connection.init.ScriptUtils: debug
+    "org.github.Main": debug
+    "io.r2dbc.h2.H2Connection": off

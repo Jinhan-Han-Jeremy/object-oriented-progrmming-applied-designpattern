@@ -37,6 +37,18 @@ public class Utility {
         return taskNames;
     }
 
+    public List<Task> getselectedTasksByNames(List<String> taskNames, List<Task> tasks){
+        List<Task> selectedTask = new ArrayList<>();
+        for(String taskName : taskNames){
+            for (Task task : tasks){
+                if(task.getName().equals(taskName))
+                    selectedTask.add(task);
+            }
+        }
+
+        return selectedTask;
+    }
+
     public TeamMember findTeamMemberByTaskName(List<TeamMember> teamMembers, String findingTaskName) {
         for (TeamMember member : teamMembers) {
             // skills_performance 맵에서 찾고자 하는 TaskName이 있는지 확인

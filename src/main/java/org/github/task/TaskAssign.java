@@ -3,6 +3,7 @@ package org.github.task;
 import org.github.tasksstream.TasksHistory;
 
 import java.util.*;
+import org.github.utility.Utility;
 import org.github.utility.SimilarityCalculator;
 
 public class TaskAssign implements TaskAssignInterface{
@@ -28,6 +29,21 @@ public class TaskAssign implements TaskAssignInterface{
         }
         // 조건에 해당하지 않으면 true 반환
         return true;
+    }
+
+    public List<Task> getTasks(){
+        return tasks;
+    }
+
+    public List<String> getSelectedTaskNames(){
+        return selectedTaskNames;
+    }
+
+    public List<Task> getSelectedTasksByTaskNames(List<String> selectedTaskNames, List<Task> allTasks){
+        Utility utils = new Utility();
+        List<Task> foundTasks = new ArrayList<>();
+        foundTasks = utils.getselectedTasksByNames(selectedTaskNames, allTasks);
+        return foundTasks;
     }
 
     @Override

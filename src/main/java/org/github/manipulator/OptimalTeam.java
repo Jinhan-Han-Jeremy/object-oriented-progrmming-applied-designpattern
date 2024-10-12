@@ -3,9 +3,14 @@ package org.github.manipulator;
 import org.github.member.TeamMember;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.github.task.Task;
+import org.github.task.TaskAssign;
+import org.github.tasksstream.TasksHistory;
 import  org.github.utility.UtilityEquations;
 import  org.github.utility.Utility;
 
@@ -46,20 +51,6 @@ public class OptimalTeam implements OptimalTeamInterface {
         updateBestCombination(count, i, j, k, time1, time2, time3, teamMembers, bestTime, bestCombination);
     }
 
-    @Override
-    public BigDecimal calculateTaskTimeByMembers(List<TeamMember> teamMembers, List<TeamMember> selectedTeam, double[][] timeMatrix, int taskIdx) {
-        List<Double> times = new ArrayList<>();
-        for (TeamMember member : selectedTeam) {
-            for (int i= 0; i < teamMembers.size(); i++) {
-                if (teamMembers.get(i).getName().equals(member.getName())) {
-                    times.add(timeMatrix[i][taskIdx]);
-                    break;
-                }
-            }
-        }
-        BigDecimal calculatedTimes = UtilityEquations.calculateParallelTimeFromInverseSum(times);
-        return UtilityEquations.calculateParallelTimeFromInverseSum(times);
-    }
 
     // 3. 비유한 값의 개수를 계산하는 함수
     private long getNonFiniteCount(double... times) {
@@ -141,10 +132,13 @@ public class OptimalTeam implements OptimalTeamInterface {
         List<TeamMember> allMembers = new ArrayList<>(teamMembers);
         Utility utility = new Utility();
 
+        //SelectedTaskNames
+        System.out.println("First Second Third " + tasks)  ;
         for (int i = 0; i < 3; i++) {
             int taskIdx = (firstTaskIdx + i) % tasks.size();
             List<TeamMember> taskTeam = findOptimalTeamForTask(allMembers, timeMatrix, taskIdx);
-            BigDecimal taskTime = calculateTaskTimeByMembers(allMembers, taskTeam, timeMatrix, taskIdx);
+            //계산식 할당 및 두자리수만 나오게 숫자 변경
+            BigDecimal taskTime = calculateTaskTimeByMembers(allMembers, taskTeam, timeMatrix, taskIdx).setScale(2, RoundingMode.HALF_UP);;
 
             System.out.println((i == 0 ? "First" : i == 1 ? "Second" : "Third")
                     + " task " + tasks.get(taskIdx) + ": "
@@ -154,6 +148,21 @@ public class OptimalTeam implements OptimalTeamInterface {
             allMembers = excludeTeamMembers(allMembers, taskTeam);
         }
 
+    }
+
+    @Override
+    public BigDecimal calculateTaskTimeByMembers(List<TeamMember> teamMembers, List<TeamMember> selectedTeam, double[][] timeMatrix, int taskIdx) {
+        List<Double> times = new ArrayList<>();
+        for (TeamMember member : selectedTeam) {
+            for (int i= 0; i < teamMembers.size(); i++) {
+                if (teamMembers.get(i).getName().equals(member.getName())) {
+                    times.add(timeMatrix[i][taskIdx]);
+                    break;
+                }
+            }
+        }
+        BigDecimal calculatedTimes = UtilityEquations.calculateParallelTimeFromInverseSum(times);
+        return UtilityEquations.calculateParallelTimeFromInverseSum(times);
     }
 
     @Override
